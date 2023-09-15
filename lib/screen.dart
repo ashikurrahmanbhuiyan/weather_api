@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/weather.dart';
-import 'package:weather_app/weather_service.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class screen extends StatefulWidget {
-  const screen({super.key});
+class Screen extends StatefulWidget {
+  const Screen({super.key});
 
   @override
-  _screenState createState() => _screenState();
+  _ScreenState createState() => _ScreenState();
 }
 
-class _screenState extends State<screen> {
+class _ScreenState extends State<Screen> {
   String city = 'dhaka';
   String showCity = 'dhaka';
-  WeatherService weatherService = WeatherService();
   Weather weather = Weather();
   @override
   void initState() {
     super.initState();
-    getWeather(city);
+    getWeather();
   }
-
-  void getWeather(String city) async {
-    weather = await weatherService.getWeather(city);
+  void getWeather() async {
+    final response = await http.get(
+        Uri.http('api.weatherapi.com', '/v1/current.json',
+            {'key': '9ab977e44bb746f1935150902231409', 'q': city}) );
+    setState(() {
+      weather = Weather.fromJson(json.decode(response.body));
+    });
   }
 
   @override
@@ -30,6 +34,7 @@ class _screenState extends State<screen> {
       appBar: AppBar(
         title: const Text('Weather App'),
       ),
+      //input data
       body: Column(
         children: [
           TextField(
@@ -46,7 +51,7 @@ class _screenState extends State<screen> {
             onPressed: () {
               setState(() {
                 showCity = city;
-                getWeather(showCity);
+                getWeather();
               });
             },
             child: const Text('Get Weather'),
