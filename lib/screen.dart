@@ -26,6 +26,7 @@ class _ScreenState extends State<Screen> {
     setState(() {
       weather = Weather.fromJson(json.decode(response.body));
     });
+    print(json.decode(response.body));
   }
 
   @override
