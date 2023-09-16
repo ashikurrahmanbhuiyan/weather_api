@@ -41,12 +41,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String city = 'dhaka';
   String showCity = 'dhaka';
   int temp = 0;
-  String tempfeel = '0';
-  String mintemp = '0';
-  String maxtemp = '0';
-  String humidity = '0';
-  String sunrise = '0';
-  String sunset = '0';
+  int tempfeel = 0;
+  String description = '';
+  String humidity = '';
+  String sunrise = '';
+  String sunset = '';
   
 
   @override
@@ -64,9 +63,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     setState(() {
       country = json.decode(response.body)['sys']['country'].toString();
       temp = double.parse(json.decode(response.body)['main']['temp'].toString()).toInt() - 273.toInt();
-      tempfeel = json.decode(response.body)['main']['feels_like'].toString();
-      mintemp = json.decode(response.body)['main']['temp_min'].toString();
-      maxtemp = json.decode(response.body)['main']['temp_max'].toString();
+      tempfeel = double.parse(json.decode(response.body)['main']['feels_like'].toString()).toInt() - 273.toInt();
+      description = json.decode(response.body)['weather'][0]['description'].toString();
       humidity = json.decode(response.body)['main']['humidity'].toString();
       sunrise = json.decode(response.body)['sys']['sunrise'].toString();
       sunset = json.decode(response.body)['sys']['sunset'].toString();
@@ -109,13 +107,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
           const SizedBox(height: 10),
           Text('City: $showCity', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
-          Text('Temperature: $temp degree celcious', style: const TextStyle(fontSize: 20),),
+          Text('Description: $description', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
-          Text('Temperature Feel: $tempfeel', style: const TextStyle(fontSize: 20),),
+          Text('Temperature: $temp ° celsius', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
-          Text('Minimum Temperature: $mintemp', style: const TextStyle(fontSize: 20),),
-          const SizedBox(height: 10),
-          Text('Maximum Temperature: $maxtemp', style: const TextStyle(fontSize: 20),),
+          Text('Temperature Feel: $tempfeel ° celsius', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
           Text('Humidity: $humidity', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
