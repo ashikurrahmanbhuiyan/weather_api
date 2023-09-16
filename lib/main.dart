@@ -3,6 +3,7 @@ import 'package:weather_app/screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+
 void main() => runApp(const MyApp1());
 
 class MyApp extends StatelessWidget {
@@ -39,7 +40,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String country = 'Bangladesh';
   String city = 'dhaka';
   String showCity = 'dhaka';
-  String temp = '0';
+  int temp = 0;
   String tempfeel = '0';
   String mintemp = '0';
   String maxtemp = '0';
@@ -62,7 +63,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     print(json.decode(response.body));
     setState(() {
       country = json.decode(response.body)['sys']['country'].toString();
-      temp = json.decode(response.body)['main']['temp'].toString();
+      temp = double.parse(json.decode(response.body)['main']['temp'].toString()).toInt() - 273.toInt();
       tempfeel = json.decode(response.body)['main']['feels_like'].toString();
       mintemp = json.decode(response.body)['main']['temp_min'].toString();
       maxtemp = json.decode(response.body)['main']['temp_max'].toString();
@@ -108,7 +109,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           const SizedBox(height: 10),
           Text('City: $showCity', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
-          Text('Temperature: $temp', style: const TextStyle(fontSize: 20),),
+          Text('Temperature: $temp degree celcious', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
           Text('Temperature Feel: $tempfeel', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
