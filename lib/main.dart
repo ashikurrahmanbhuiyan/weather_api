@@ -40,8 +40,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String country = 'Bangladesh';
   String city = 'dhaka';
   String showCity = 'dhaka';
-  int temp = 0;
-  int tempfeel = 0;
+  String temp = '0';
+  String tempfeel = '0';
   String description = '';
   String humidity = '';
   String sunrise = '';
@@ -57,13 +57,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
   void fetchWeatherData() async {
     final response = await http.get(Uri.http(
       'api.openweathermap.org', '/data/2.5/weather',
-      {'q': city,'appid': 'fe33f02145218e70bea2ea99eec35ec1'})
+      {'q': city,'units':'metric','appid': 'fe33f02145218e70bea2ea99eec35ec1'})
     );
     print(json.decode(response.body));
     setState(() {
       country = json.decode(response.body)['sys']['country'].toString();
-      temp = double.parse(json.decode(response.body)['main']['temp'].toString()).toInt() - 273.toInt();
-      tempfeel = double.parse(json.decode(response.body)['main']['feels_like'].toString()).toInt() - 273.toInt();
+      temp = json.decode(response.body)['main']['temp'].toString();
+      tempfeel = json.decode(response.body)['main']['feels_like'].toString();
       description = json.decode(response.body)['weather'][0]['description'].toString();
       humidity = json.decode(response.body)['main']['humidity'].toString();
       sunrise = json.decode(response.body)['sys']['sunrise'].toString();
@@ -109,9 +109,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
           const SizedBox(height: 10),
           Text('Description: $description', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
-          Text('Temperature: $temp ° celsius', style: const TextStyle(fontSize: 20),),
+          Text('Temperature: $temp ° C', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
-          Text('Temperature Feel: $tempfeel ° celsius', style: const TextStyle(fontSize: 20),),
+          Text('Temperature Feel: $tempfeel ° C', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
           Text('Humidity: $humidity', style: const TextStyle(fontSize: 20),),
           const SizedBox(height: 10),
